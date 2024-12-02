@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,minimum-scale=0.6,maximum-scale=1.0,user-scalable=0">
+    <style>
+    html{
+        font-size:1.3vw;
+    }
+    #basementDiv{
+        position: relative;
+        margin: 3rem 6rem 4rem 6rem;
+        padding:2.5rem;
+        border: 0.15rem solid grey;
+    }
+    #questionDiv{
+        position: relative;
+        text-align: center;
+        margin: 0.8rem 5rem 0.8rem 5rem;
+        padding:1.5rem;
+    }
+    #inputDiv{
+        text-align: center;
+    }
+    #scoreDiv{
+        margin-bottom: 0.4rem;
+    }
+    button{
+        font-size:1rem;
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+    #answerInput{
+        height:1.4rem;
+        font-size:1rem;
+        text-align: center;
+        width:20rem;
+    }
+    </style>
+    <title>答题系统</title>
+</head>
+
+<body>
+    <div id="basementDiv">
+        <div id="scoreDiv">
+            <label>当前分数: </label>
+            <span id="scoreSpan"></span>
+        </div>
+        <label>题目：</label>
+        <br>
+        <div id="questionDiv"></div>
+        <div id="answerDiv">
+            <label>请输入答案:</label>
+            <br>
+            <div id="inputDiv">
+                <input id="answerInput" type="text">
+                <br><br>
+                <button id="confirmButton">确认</button>
+                <button id="nextButton">下一题</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+
+    function judge(){
+        if(answerInput.value ==questionObj.rightAnswer){
+            score++;
+            scoreSpan.innerText = score;
+            window.confirm("答对了!得分+1！");
+        }
+        else{
+            window.confirm("答错了！正确答案是：" + questionObj.rightAnswer);
+        }
+        answerInput.value=' ';
+    }
+
+    let score = 0;
+    const scoreSpan = document.getElementById("scoreSpan");
+    const answerInput = document.getElementById("answerInput");
+    const questionDiv = document.getElementById("questionDiv");
+    let questionObj = {
+        content: "软件工程是_____如何以系统性的、规范化的、可定量的过程化方法去开发和维护软件，以及如何把经过时间考验而证明正确的管理技术和当前能够得到的最好的技术方法结合起来的学科。",
+        rightAnswer: "研究"
+    };
+    questionDiv.innerText = questionObj.content;
+    scoreSpan.innerText = score;
+    document.getElementById("confirmButton").addEventListener('click', judge);
+    $("#nextButton").on('click', function () {
+        $.ajax({
+            type: 'GET',
+            url: '',
+            data: { content, rightAnswer },
+            success: function (data, status, xhr) {
+                questionObj.content = data.content;
+                questionObj.rightAnswer = data.rightAnswer;
+                questionDiv.innerText = questionObj.content;
+            }
+        })
+    })
+    
+</script>
+
+</html>
