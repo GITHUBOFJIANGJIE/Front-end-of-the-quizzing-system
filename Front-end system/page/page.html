@@ -56,17 +56,17 @@
         margin-bottom: 2px;
     }
 
-    input[type="text"] {
-            text-align: center;
-            padding: 10px;
-            width: 80%;
-            max-width: 300px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-
+     #answerInput{
+        text-align: center;
+        padding: 10px;
+        width: 80%;
+        max-width: 300px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    } 
+ 
     button{
         padding: 10px 20px;
             font-size: 16px;
@@ -85,13 +85,6 @@
 
     button:active {
             background-color: #1d4ed8;
-    }
-
-    #answerInput{
-        height:1.4rem;
-        font-size:1rem;
-        text-align: center;
-        width:20rem;
     }
 
     </style>
@@ -131,7 +124,7 @@
         else{
             window.confirm("答错了！正确答案是：" + questionObj.rightAnswer);
         }
-        answerInput.value=' ';
+        answerInput.value='';
     }
 
     let score = 0;
@@ -145,18 +138,23 @@
     questionDiv.innerText = questionObj.content;
     scoreSpan.innerText = score;
     document.getElementById("confirmButton").addEventListener('click', judge);
+
     $("#nextButton").on('click', function () {
         $.ajax({
             type: 'GET',
-            url: '',
-            data: { content, rightAnswer },
-            success: function (data, status, xhr) {
-                questionObj.content = data.content;
-                questionObj.rightAnswer = data.rightAnswer;
+            url: 'your-url-here', // 需要替换为实际的 URL
+            dataType: "json",
+            data: { timestamp: Date.now() }, 
+            success: function (backData) {
+                questionObj.content = backData.content;
+                questionObj.rightAnswer = backData.rightAnswer;
                 questionDiv.innerText = questionObj.content;
+            },
+            error: function (backData) {
+                alert("获取题目失败！");
             }
-        })
-    })
+        });
+    });
     
 </script>
 
